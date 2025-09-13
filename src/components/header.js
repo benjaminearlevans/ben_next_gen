@@ -31,7 +31,18 @@ const Header = ({ siteTitle }) => {
     { id: 5, label: 'Get in Touch', url: '/contact/', is_external: false, is_cta: true }
   ]
 
-  const dynamicSiteTitle = siteTitle || 'Benjamin Carlson'
+  // Fetch site settings for dynamic site title
+  const settingsData = useStaticQuery(graphql`
+    query SiteSettingsQuery {
+      directus {
+        site_settings {
+          site_title
+        }
+      }
+    }
+  `)
+
+  const dynamicSiteTitle = siteTitle || settingsData?.directus?.site_settings?.site_title || 'Benjamin Carlson'
 
   // Split navigation items into left and right groups
   const leftNavItems = navigationItems.filter(item => !item.is_cta)

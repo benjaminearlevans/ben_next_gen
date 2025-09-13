@@ -1,53 +1,64 @@
 import React from "react"
+import { useStaticQuery, graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 import Hero from "../components/hero"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { Button } from "../components/ui/button"
-import { Link } from "gatsby"
 
 const IndexPage = () => {
-  // Static fallback content until Directus collections are set up
-  const posts = [
-    {
-      id: 1,
-      title: "Getting Started with React and TypeScript",
-      slug: "getting-started-react-typescript",
-      excerpt: "Learn how to set up a modern React application with TypeScript for better development experience and type safety.",
-      date_created: "2024-01-15",
-      type: "article",
-      featured_image: null,
-      author: {
-        first_name: "Benjamin",
-        last_name: "Carlson"
-      }
-    },
-    {
-      id: 2,
-      title: "Building Modern Web Applications with Gatsby",
-      slug: "building-modern-web-apps-gatsby",
-      excerpt: "Discover how Gatsby's static site generation can help you build fast, SEO-friendly websites with modern tooling.",
-      date_created: "2024-01-10",
-      type: "article",
-      featured_image: null,
-      author: {
-        first_name: "Benjamin",
-        last_name: "Carlson"
-      }
-    },
-    {
-      id: 3,
-      title: "The Future of Web Development",
-      slug: "future-of-web-development",
-      excerpt: "Exploring upcoming trends and technologies that will shape the future of web development in the coming years.",
-      date_created: "2024-01-05",
-      type: "article",
-      featured_image: null,
-      author: {
-        first_name: "Benjamin",
-        last_name: "Carlson"
+  // Fetch featured posts from Directus
+  const data = useStaticQuery(graphql`
+    query HomepageQuery {
+      directus {
+        featured_posts(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
+          post {
+            id
+            title
+            slug
+            excerpt
+            date_created
+            type
+            featured_image {
+              id
+              filename_download
+              width
+              height
+            }
+            author {
+              first_name
+              last_name
+            }
+          }
+        }
+        post(filter: { 
+          status: { _eq: "published" }
+          type: { _eq: "article" }
+        }, sort: ["-date_created"], limit: 3) {
+          id
+          title
+          slug
+          excerpt
+          date_created
+          type
+          featured_image {
+            id
+            filename_download
+            width
+            height
+          }
+          author {
+            first_name
+            last_name
+          }
+        }
       }
     }
-  ]
+  `)
+
+  // Use featured posts if available, otherwise fall back to latest articles
+  const featuredPosts = data?.directus?.featured_posts?.map(fp => fp.post) || []
+  const latestPosts = data?.directus?.post || []
+  const posts = featuredPosts.length > 0 ? featuredPosts : latestPosts
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {

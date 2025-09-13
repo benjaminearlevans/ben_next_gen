@@ -77,77 +77,49 @@ const SpeakingPage = () => {
     return '/images/default-video-thumb.jpg'
   }
 
-  const pastAudiences = [
+  // Fetch companies/audiences from Directus
+  const companiesData = useStaticQuery(graphql`
+    query CompaniesQuery {
+      directus {
+        companies(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
+          id
+          name
+          description
+          logo_svg
+        }
+      }
+    }
+  `)
+
+  const pastAudiences = companiesData?.directus?.companies || [
     {
       name: "Berkeley",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor">
-          <text x="0" y="40" className="text-2xl font-bold">
-            UC Berkeley
-          </text>
-        </svg>
-      ),
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">UC Berkeley</text></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
       name: "AIGA",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 120 60" fill="currentColor">
-          <text x="0" y="40" className="text-3xl font-bold">
-            AIGA
-          </text>
-        </svg>
-      ),
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 120 60" fill="currentColor"><text x="0" y="40" className="text-3xl font-bold">AIGA</text></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
       name: "Adobe",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624V1.376z" />
-        </svg>
-      ),
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor"><path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624V1.376z" /></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
       name: "Salesforce",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor">
-          <g transform="scale(0.3)">
-            <path d="M163.6 69.2c-6.9-8.8-17.8-14.5-30.1-14.5-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3C-3.1 89.9-8 97.6-8 106.5c0 13.3 10.8 24.1 24.1 24.1h135.1c17.7 0 32-14.3 32-32 0-13.4-8.2-24.9-19.9-29.4z" />
-            <path d="M133.5 54.7c-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3-4.4 4-7.2 9.7-7.2 16.1 0 12 9.7 21.7 21.7 21.7h127.7c16.6 0 30-13.4 30-30s-13.4-30-30-30z" />
-          </g>
-        </svg>
-      ),
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><g transform="scale(0.3)"><path d="M163.6 69.2c-6.9-8.8-17.8-14.5-30.1-14.5-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3C-3.1 89.9-8 97.6-8 106.5c0 13.3 10.8 24.1 24.1 24.1h135.1c17.7 0 32-14.3 32-32 0-13.4-8.2-24.9-19.9-29.4z" /><path d="M133.5 54.7c-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3-4.4 4-7.2 9.7-7.2 16.1 0 12 9.7 21.7 21.7 21.7h127.7c16.6 0 30-13.4 30-30s-13.4-30-30-30z" /></g></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
-      name: "Stanford",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor">
-          <text x="0" y="40" className="text-2xl font-bold">
-            Stanford
-          </text>
-        </svg>
-      ),
+      name: "Netflix",
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">Netflix</text></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
-      name: "Meta",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624V1.376z" />
-        </svg>
-      ),
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "LinkedIn",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-        </svg>
-      ),
+      name: "Airbnb",
+      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">Airbnb</text></svg>',
       description: "Delivered a talk to help teams understand the benefits of inclusive design",
     },
     {
@@ -241,7 +213,10 @@ const SpeakingPage = () => {
             <div className="grid grid-cols-3 gap-x-12 gap-y-8">
               {pastAudiences.map((audience, index) => (
                 <div key={index} className="space-y-2">
-                  <div className="text-[#ffffff] h-8 flex items-center">{audience.logo}</div>
+                  <div 
+                    className="text-[#ffffff] h-8 flex items-center"
+                    dangerouslySetInnerHTML={{ __html: audience.logo_svg || audience.logo }}
+                  />
                   <p className="text-[#c4c4c4] text-sm leading-relaxed">{audience.description}</p>
                 </div>
               ))}

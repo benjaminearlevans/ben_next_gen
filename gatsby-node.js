@@ -50,8 +50,44 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
-  // Note: Dynamic post pages created based on type:
-  // - Articles: /blog/{slug} using article-post.js
-  // - Speaking: /speaking/{slug} using speaking-post.js  
-  // - Podcasts: /podcast/{slug} using podcast-post.js
+  // Create dynamic pages from Directus pages collection with blocks
+  try {
+    const pagesResult = await graphql(`
+      query {
+        directus {
+          pages(filter: { status: { _eq: "published" } }) {
+            id
+            title
+            slug
+          }
+        }
+      }
+    `)
+
+    if (pagesResult.errors) {
+      throw pagesResult.errors
+    }
+
+    const pages = pagesResult.data.directus.pages || []
+
+    pages.forEach(page => {
+      createPage({
+        path: `/${page.slug}`,
+        component: path.resolve(`./src/templates/page.js`),
+        context: {
+          id: page.id,
+          slug: page.slug,
+        },
+      })
+    })
+
+    console.log(`Created ${pages.length} dynamic pages with reusable blocks`)
+  } catch (error) {
+    console.log('Pages collection not yet available:', error.message)
+    console.log('Create the pages collection in Directus as described in docs/DIRECTUS_MANUAL_SETUP.md')
+  }
+
+  // Note: Dynamic pages created:
+  // - Posts: /{type}/{slug} using type-specific templates
+  // - Pages: /{slug} using page.js template with reusable blocks
 }

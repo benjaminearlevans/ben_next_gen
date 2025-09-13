@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
+import { Button } from "./ui/button"
+import { cn } from "../lib/utils"
 
 const Header = ({ siteTitle }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -36,9 +38,33 @@ const Header = ({ siteTitle }) => {
   const rightNavItems = navigationItems.filter(item => item.is_cta)
 
   const renderNavigationLink = (item, isMobile = false) => {
-    const baseClasses = isMobile
-      ? "text-[#ffffff] hover:text-[#c4c4c4] transition-colors block px-3 py-2 text-base font-medium"
-      : "text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+    const baseClasses = cn(
+      "text-foreground hover:text-muted-foreground transition-colors",
+      isMobile && "block px-3 py-2 text-base font-medium"
+    )
+
+    if (item.is_cta) {
+      if (item.is_external) {
+        return (
+          <Button key={item.id} asChild size="sm">
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+            </a>
+          </Button>
+        )
+      }
+      return (
+        <Button key={item.id} asChild size="sm">
+          <Link to={item.url}>
+            {item.label}
+          </Link>
+        </Button>
+      )
+    }
 
     if (item.is_external) {
       return (
@@ -59,7 +85,7 @@ const Header = ({ siteTitle }) => {
         key={item.id}
         to={item.url}
         className={baseClasses}
-        activeClassName="text-[#c4c4c4]"
+        activeClassName="text-muted-foreground"
       >
         {item.label}
       </Link>
@@ -67,7 +93,7 @@ const Header = ({ siteTitle }) => {
   }
 
   return (
-    <header className="bg-[#000000] sticky top-0 z-50">
+    <header className="bg-background border-b sticky top-0 z-50">
       {/* Navigation */}
       <nav className="flex justify-between items-center px-8 py-6">
         <div className="flex space-x-8">
@@ -80,8 +106,8 @@ const Header = ({ siteTitle }) => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-[#000000]">
-          <div className="px-8 py-4 space-y-2 border-t border-gray-800">
+        <div className="md:hidden bg-background">
+          <div className="px-8 py-4 space-y-2 border-t">
             {navigationItems.map(item => renderNavigationLink(item, true))}
           </div>
         </div>
@@ -89,10 +115,11 @@ const Header = ({ siteTitle }) => {
 
       {/* Mobile menu button - positioned absolutely */}
       <div className="md:hidden absolute top-6 right-8">
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
-          className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
         >
           <svg
             className="h-6 w-6"
@@ -107,7 +134,7 @@ const Header = ({ siteTitle }) => {
               d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
             />
           </svg>
-        </button>
+        </Button>
       </div>
     </header>
   )

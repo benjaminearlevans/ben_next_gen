@@ -198,7 +198,7 @@ For each file you refactor, ensure:
 - [x] **Replace styled-components** with className and Tailwind
 - [x] **Convert pixel values** to Tailwind spacing scale (8px = 2, 16px = 4, etc.)
 - [x] **Use design tokens** from tailwind.config.js (max-w-article not max-w-[680px])
-- [ ] **Import shadcn/ui components** instead of creating custom ones
+- [x] **Import shadcn/ui components** instead of creating custom ones
 - [x] **Use cn() utility** for all conditional classes
 - [x] **Apply prose classes** for markdown content
 - [x] **Implement responsive patterns** with Tailwind breakpoints (sm:, md:, lg:)

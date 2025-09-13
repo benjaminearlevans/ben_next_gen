@@ -1,8 +1,10 @@
 import React from "react"
 import { Link } from "gatsby"
 import Layout from "../components/layout"
+import EditorialLayout from "../components/layouts/editorial-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { Button } from "../components/ui/button"
+import { Badge } from "../components/ui/badge"
 
 const PodcastPage = () => {
   // Static fallback content until Directus collections are set up
@@ -59,12 +61,12 @@ const PodcastPage = () => {
 
   return (
     <Layout>
-      <div className="podcast-page">
+      <EditorialLayout>
         {/* Hero Section */}
-        <section className="podcast-hero">
-          <div className="container">
-            <h1 className="podcast-title">Podcast</h1>
-            <p className="podcast-description">
+        <section className="py-16">
+          <div className="max-w-article mx-auto">
+            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mb-6">Podcast</h1>
+            <p className="text-xl text-muted-foreground leading-7 mb-8">
               Listen to my conversations about design, leadership, and building 
               great products. From deep dives into design systems to discussions 
               about scaling teams, these episodes cover the topics that matter most 
@@ -74,60 +76,64 @@ const PodcastPage = () => {
         </section>
 
         {/* Podcast Episodes */}
-        <section className="podcast-section">
-          <div className="container">
-            <div className="podcast-grid">
+        <section className="py-12">
+          <div className="max-w-container-content mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {podcasts.length > 0 ? (
                 podcasts.map((podcast) => (
-                  <article key={podcast.id} className="podcast-card">
-                    <div className="podcast-artwork">
+                  <Card key={podcast.id} className="overflow-hidden">
+                    <div className="aspect-video bg-muted relative overflow-hidden">
                       {podcast.featured_image ? (
                         <img 
                           src={`${process.env.GATSBY_DIRECTUS_URL}/assets/${podcast.featured_image.id}`}
                           alt={podcast.title}
+                          className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="default-artwork">
-                          <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                        <div className="flex items-center justify-center h-full">
+                          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/>
                           </svg>
                         </div>
                       )}
                     </div>
                     
-                    <div className="podcast-content">
-                      <div className="podcast-meta">
-                        {podcast.podcast_name && (
-                          <span className="podcast-show">{podcast.podcast_name}</span>
-                        )}
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="secondary" className="text-xs">
+                          Podcast
+                        </Badge>
                         {podcast.duration && (
-                          <span className="podcast-duration">{podcast.duration}</span>
+                          <span className="text-xs text-muted-foreground">{podcast.duration}</span>
                         )}
-                        <time className="podcast-date">
-                          {formatDate(podcast.date_created)}
-                        </time>
                       </div>
                       
-                      <h2 className="podcast-episode-title">
-                        <Link to={`/podcast/${podcast.slug}`}>
+                      <CardTitle className="line-clamp-2">
+                        <Link to={`/podcast/${podcast.slug}`} className="hover:text-primary transition-colors">
                           {podcast.title}
                         </Link>
-                      </h2>
+                      </CardTitle>
                       
-                      {podcast.excerpt && (
-                        <p className="podcast-excerpt">{podcast.excerpt}</p>
+                      <time className="text-sm text-muted-foreground">
+                        {formatDate(podcast.date_created)}
+                      </time>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      {podcast.description && (
+                        <CardDescription className="line-clamp-3 mb-4">{podcast.description}</CardDescription>
                       )}
 
                       {/* Audio Player */}
                       {podcast.audio_url && (
-                        <div className="podcast-player">
+                        <div className="space-y-4">
                           {isDirectAudioFile(podcast.audio_url) ? (
-                            <audio controls className="native-audio-player">
+                            <audio controls className="w-full">
                               <source src={podcast.audio_url} type="audio/mpeg" />
                               Your browser does not support the audio element.
                             </audio>
                           ) : getSpotifyEpisodeId(podcast.audio_url) ? (
-                            <div className="spotify-player">
+                            <div className="w-full">
                               <iframe 
                                 src={`https://open.spotify.com/embed/episode/${getSpotifyEpisodeId(podcast.audio_url)}`}
                                 width="100%" 
@@ -136,38 +142,38 @@ const PodcastPage = () => {
                                 allowtransparency="true" 
                                 allow="encrypted-media"
                                 title={`Spotify player for ${podcast.title}`}
+                                className="rounded-md"
                               />
                             </div>
                           ) : (
-                            <div className="external-player">
+                            <Button asChild variant="outline" className="w-full">
                               <a 
                                 href={podcast.audio_url} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="listen-button"
                               >
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mr-2">
                                   <path d="M8 5v14l11-7z" fill="currentColor"/>
                                 </svg>
                                 Listen to Episode
                               </a>
-                            </div>
+                            </Button>
                           )}
                         </div>
                       )}
-                    </div>
-                  </article>
+                    </CardContent>
+                  </Card>
                 ))
               ) : (
-                <div className="empty-state">
-                  <h3>No podcast episodes yet</h3>
-                  <p>Podcast episodes will appear here once added to the CMS.</p>
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-semibold mb-2">No podcast episodes yet</h3>
+                  <p className="text-muted-foreground">Podcast episodes will appear here once added to the CMS.</p>
                 </div>
               )}
             </div>
           </div>
         </section>
-      </div>
+      </EditorialLayout>
     </Layout>
   )
 }

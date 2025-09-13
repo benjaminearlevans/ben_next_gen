@@ -29,15 +29,15 @@ const PostCard = ({ post }) => {
     }
   }
 
-  const getPostTypeColor = () => {
+  const getPostTypeVariant = () => {
     switch (post.type) {
       case 'speaking':
-        return 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+        return 'default'
       case 'podcast':
-        return 'bg-purple-100 text-purple-800 hover:bg-purple-200'
+        return 'secondary'
       case 'article':
       default:
-        return 'bg-green-100 text-green-800 hover:bg-green-200'
+        return 'outline'
     }
   }
 
@@ -69,7 +69,7 @@ const PostCard = ({ post }) => {
         )}
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <Badge variant="secondary" className={cn("text-xs", getPostTypeColor())}>
+            <Badge variant={getPostTypeVariant()} className="text-xs">
               {getPostTypeLabel()}
             </Badge>
             <time className="text-xs text-muted-foreground">{formattedDate}</time>

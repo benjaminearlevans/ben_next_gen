@@ -2,6 +2,8 @@ import React from "react"
 import { graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
+import EditorialLayout from "../components/layouts/editorial-layout"
+import { Badge } from "../components/ui/badge"
 
 const BlogPostTemplate = ({ data }) => {
   const post = data.directus.post_by_id
@@ -19,43 +21,47 @@ const BlogPostTemplate = ({ data }) => {
 
   return (
     <Layout>
-      <article className="blog-post">
-        <div className="container">
-          <header className="blog-post-header">
-            <h1 className="blog-post-title">{post.title}</h1>
-            <div className="blog-post-meta">
-              <span className="post-date">{formattedDate}</span>
-              <span className="post-author">by {authorName}</span>
+      <EditorialLayout>
+        <article>
+          <header className="mb-8">
+            <div className="mb-4">
+              <Badge variant="outline">Article</Badge>
+            </div>
+            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mb-4">{post.title}</h1>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <time>{formattedDate}</time>
+              <span>by {authorName}</span>
             </div>
           </header>
 
           {featuredImage && (
-            <div className="blog-post-image">
+            <div className="breakout-medium mb-8">
               <GatsbyImage 
                 image={featuredImage} 
                 alt={post.featured_image.title || post.title}
+                className="rounded-lg"
               />
             </div>
           )}
 
-          <div className="blog-post-content">
+          <div className="prose prose-lg max-w-none">
             {post.content && (
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             )}
           </div>
 
           {post.tags && post.tags.length > 0 && (
-            <div className="blog-post-tags">
-              <h4>Tags:</h4>
-              <ul>
+            <div className="mt-8 pt-8 border-t">
+              <h4 className="text-sm font-medium text-muted-foreground mb-3">Tags</h4>
+              <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
-                  <li key={tag.id}>{tag.name}</li>
+                  <Badge key={tag.id} variant="secondary">{tag.name}</Badge>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
-        </div>
-      </article>
+        </article>
+      </EditorialLayout>
     </Layout>
   )
 }

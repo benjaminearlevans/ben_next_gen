@@ -18,12 +18,12 @@ const Hero = () => {
             {heroSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-background text-primary hover:bg-muted">
               <Link to="/blog/">
                 Read My Blog
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-blue-600">
+            <Button asChild size="lg" variant="outline" className="border-2 border-background text-background hover:bg-background hover:text-primary">
               <Link to="/contact/">
                 Get in Touch
               </Link>

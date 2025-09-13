@@ -1,8 +1,10 @@
 import React from "react"
 import { Link } from "gatsby"
 import Layout from "../components/layout"
+import EditorialLayout from "../components/layouts/editorial-layout"
 import { Card, CardContent } from "../components/ui/card"
 import { Button } from "../components/ui/button"
+import { Badge } from "../components/ui/badge"
 
 const SpeakingPage = () => {
   // Static fallback content until Directus collections are set up
@@ -166,12 +168,12 @@ const SpeakingPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-black text-white">
+      <EditorialLayout>
         {/* Hero Section */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Speaking</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
+        <section className="py-16">
+          <div className="max-w-article mx-auto">
+            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mb-6">Speaking</h1>
+            <p className="text-xl text-muted-foreground leading-7 mb-8">
               I've had the privilege of sharing insights and connecting with amazing 
               communities around the world. Here's a collection of my recent talks, 
               podcast appearances, and speaking engagements.
@@ -180,35 +182,49 @@ const SpeakingPage = () => {
         </section>
 
         {/* Speaking Engagements */}
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-8">Speaking</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <section className="py-12">
+          <div className="max-w-container-content mx-auto">
+            <div className="mb-12">
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-4">Recent Talks</h2>
+              <p className="text-muted-foreground leading-7">
+                Sharing knowledge and insights with developer communities worldwide.
+              </p>
+            </div>
+            <div className="space-y-8">
               {speakingEngagements.map((engagement) => (
-                <Card key={engagement.id} className="bg-card border-border overflow-hidden group cursor-pointer">
-                  <Link to={`/speaking/${engagement.slug}/`}>
-                    <div className="aspect-video bg-muted relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-background/10 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-background/20 transition-colors">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-foreground ml-1">
-                            <path d="M8 5v14l11-7z" fill="currentColor"/>
-                          </svg>
+                <Card key={engagement.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <Link to={`/speaking/${engagement.slug}/`} className="block">
+                    <div className="flex flex-col md:flex-row">
+                      <div className="md:w-1/3 aspect-video md:aspect-square bg-muted relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-12 h-12 bg-background/80 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-foreground ml-0.5">
+                              <path d="M8 5v14l11-7z" fill="currentColor"/>
+                            </svg>
+                          </div>
                         </div>
                       </div>
+                      <CardContent className="md:w-2/3 p-6">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Badge variant="secondary" className="text-xs">
+                            Speaking
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(engagement.event_date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-semibold mb-2 hover:text-primary transition-colors">
+                          {engagement.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm mb-3">{engagement.event_name}</p>
+                        <p className="text-sm leading-relaxed">{engagement.excerpt}</p>
+                      </CardContent>
                     </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                        {engagement.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-1">{engagement.event_name}</p>
-                      <p className="text-muted-foreground/80 text-sm">
-                        {new Date(engagement.event_date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long'
-                        })}
-                      </p>
-                    </CardContent>
                   </Link>
                 </Card>
               ))}
@@ -217,25 +233,35 @@ const SpeakingPage = () => {
         </section>
 
         {/* Podcasts */}
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-8">Podcasts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <section className="py-12 border-t">
+          <div className="max-w-container-content mx-auto">
+            <div className="mb-12">
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-4">Podcast Appearances</h2>
+              <p className="text-muted-foreground leading-7">
+                Conversations about design, development, and building great products.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {podcastEpisodes.map((episode) => (
-                <Card key={episode.id} className="bg-card border-border overflow-hidden group cursor-pointer">
-                  <Link to={`/podcast/${episode.slug}/`}>
+                <Card key={episode.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <Link to={`/podcast/${episode.slug}/`} className="block">
                     <div className="aspect-video bg-muted relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-primary/20" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-primary/10" />
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-12 h-12 bg-background/10 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-background/20 transition-colors">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-foreground ml-0.5">
+                        <div className="w-10 h-10 bg-background/80 rounded-full flex items-center justify-center backdrop-blur-sm">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-foreground ml-0.5">
                             <path d="M8 5v14l11-7z" fill="currentColor"/>
                           </svg>
                         </div>
                       </div>
                     </div>
                     <CardContent className="p-4">
-                      <h3 className="text-base font-semibold text-foreground mb-1 group-hover:text-secondary transition-colors line-clamp-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge variant="outline" className="text-xs">
+                          Podcast
+                        </Badge>
+                      </div>
+                      <h3 className="font-semibold mb-1 hover:text-primary transition-colors line-clamp-2">
                         {episode.title}
                       </h3>
                       <p className="text-muted-foreground text-sm">{episode.podcast_name}</p>
@@ -248,24 +274,26 @@ const SpeakingPage = () => {
         </section>
 
         {/* Past Audiences */}
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4">Past audiences</h2>
-            <p className="text-muted-foreground mb-8 max-w-3xl leading-relaxed">
-              I've been fortunate to speak at events and connect with incredible 
-              communities across various industries and disciplines.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <section className="py-12 border-t">
+          <div className="max-w-article mx-auto">
+            <div className="mb-12">
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-4">Past Audiences</h2>
+              <p className="text-muted-foreground leading-7">
+                I've been fortunate to speak at events and connect with incredible 
+                communities across various industries and disciplines.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pastAudiences.map((audience, index) => (
-                <div key={index} className="border-l-2 border-border pl-4 py-2">
-                  <h3 className="text-foreground font-semibold mb-1">{audience.name}</h3>
+                <div key={index} className="p-4 rounded-lg border bg-card hover:shadow-sm transition-shadow">
+                  <h3 className="font-semibold mb-2">{audience.name}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{audience.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
-      </div>
+      </EditorialLayout>
     </Layout>
   )
 }

@@ -4,17 +4,6 @@
   "framework": "gatsby",
   "installCommand": "npm install",
   "devCommand": "npm run develop",
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",

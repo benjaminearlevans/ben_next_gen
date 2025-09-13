@@ -254,7 +254,7 @@ const SpeakingPage = () => {
                     <div className="w-[280px] h-[440px] bg-[#c4c4c4] rounded hover:shadow-[0_0_20px_4px_rgba(255,255,255,0.3)] transition-all duration-[250ms] cursor-pointer my-1"></div>
                   </Link>
                   <div className="max-w-[680px]">
-                    <h3 className="text-[#ffffff] my-0 mx-0 space-y-0 h-6 font-normal mb-2 text-xl">{engagement.title}</h3>
+                    <h3 className="text-[#ffffff] my-0 mx-0 font-normal mb-2 text-xl leading-tight">{engagement.title}</h3>
                     <p className="text-[#c4c4c4] h-4 font-normal text-sm">
                       {new Date(engagement.event_date).toLocaleDateString('en-US', {
                         year: 'numeric',

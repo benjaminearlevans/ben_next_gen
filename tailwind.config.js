@@ -17,6 +17,22 @@ module.exports = {
       },
     },
     extend: {
+      maxWidth: {
+        'article': '680px',
+        'breakout-md': '840px',
+        'breakout-lg': '960px',
+        'container-content': '960px',
+        'container-outer': '1440px',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '680px',
+            fontSize: '18px',
+            lineHeight: '1.7',
+          },
+        },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

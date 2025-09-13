@@ -3,6 +3,7 @@ import Header from "./header"
 import Footer from "./footer"
 import "../styles/global.css"
 import { cn } from "../lib/utils"
+import { Analytics } from "@vercel/analytics/react"
 
 const Layout = ({ children, className }) => {
   return (
@@ -12,6 +13,7 @@ const Layout = ({ children, className }) => {
         {children}
       </main>
       <Footer />
+      <Analytics />
     </div>
   )
 }

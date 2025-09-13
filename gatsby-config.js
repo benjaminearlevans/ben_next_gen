@@ -27,13 +27,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Directus Site`,
-        short_name: `GatsbyDirectus`,
+        name: `Benjamin Carlson`,
+        short_name: `BenCarlson`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#1f2937`,
+        theme_color: `#3b82f6`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        // Temporarily disable icon until we have a valid image
+        // icon: `src/images/gatsby-icon.png`,
       },
     },
   ],

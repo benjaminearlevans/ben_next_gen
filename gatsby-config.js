@@ -33,8 +33,18 @@ module.exports = {
         background_color: `#1f2937`,
         theme_color: `#3b82f6`,
         display: `minimal-ui`,
-        // Temporarily disable icon until we have a valid image
-        // icon: `src/images/gatsby-icon.png`,
+        icons: [
+          {
+            src: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🚀</text></svg>`,
+            sizes: `192x192`,
+            type: `image/svg+xml`,
+          },
+          {
+            src: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🚀</text></svg>`,
+            sizes: `512x512`,
+            type: `image/svg+xml`,
+          },
+        ],
       },
     },
   ],

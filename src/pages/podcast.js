@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import Layout from "../components/layout"
 import EditorialLayout from "../components/layouts/editorial-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
@@ -7,29 +7,32 @@ import { Button } from "../components/ui/button"
 import { Badge } from "../components/ui/badge"
 
 const PodcastPage = () => {
-  // Static fallback content until Directus collections are set up
-  const podcasts = [
-    {
-      id: 1,
-      title: "Getting Started with Modern Web Development",
-      slug: "getting-started-modern-web-dev",
-      description: "In this episode, we discuss the fundamentals of modern web development and the tools that make it possible.",
-      date_created: "2024-01-20",
-      audio_url: "https://example.com/podcast1.mp3",
-      duration: "45:30",
-      episode_number: 1
-    },
-    {
-      id: 2,
-      title: "React Best Practices and Performance",
-      slug: "react-best-practices-performance",
-      description: "Deep dive into React performance optimization techniques and best practices for building scalable applications.",
-      date_created: "2024-01-15",
-      audio_url: "https://example.com/podcast2.mp3",
-      duration: "52:15",
-      episode_number: 2
+  const data = useStaticQuery(graphql`
+    query PodcastPageQuery {
+      directus {
+        post(filter: { 
+          status: { _eq: "published" }
+          type: { _eq: "podcast" }
+        }, sort: ["-date_created"]) {
+          id
+          title
+          excerpt
+          date_created
+          type
+          status
+          audio_url
+          podcast_name
+          duration
+          featured_image {
+            id
+            title
+          }
+        }
+      }
     }
-  ]
+  `)
+
+  const podcasts = data?.directus?.post || []
 
   const formatDate = (dateString) => {
     if (!dateString) return ''
@@ -109,7 +112,7 @@ const PodcastPage = () => {
                       </div>
                       
                       <CardTitle className="line-clamp-2">
-                        <Link to={`/podcast/${podcast.slug}`} className="hover:text-primary transition-colors">
+                        <Link to={`/podcast/${podcast.id}`} className="hover:text-primary transition-colors">
                           {podcast.title}
                         </Link>
                       </CardTitle>
@@ -120,8 +123,8 @@ const PodcastPage = () => {
                     </CardHeader>
                     
                     <CardContent>
-                      {podcast.description && (
-                        <CardDescription className="line-clamp-3 mb-4">{podcast.description}</CardDescription>
+                      {podcast.excerpt && (
+                        <CardDescription className="line-clamp-3 mb-4">{podcast.excerpt}</CardDescription>
                       )}
 
                       {/* Audio Player */}

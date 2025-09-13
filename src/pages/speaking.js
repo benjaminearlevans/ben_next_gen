@@ -1,104 +1,41 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import Layout from "../components/layout"
 
 const SpeakingPage = () => {
-  // Static fallback content until Directus collections are set up
-  const speakingEngagements = [
-    {
-      id: 1,
-      title: "Building Modern Web Applications",
-      slug: "building-modern-web-applications",
-      event_name: "React Conference 2024",
-      video_url: "https://youtube.com/watch?v=example1",
-      event_date: "2024-01-15",
-      excerpt: "Deep dive into modern React patterns and performance optimization techniques."
-    },
-    {
-      id: 2,
-      title: "The Future of Frontend Development",
-      slug: "future-of-frontend-development",
-      event_name: "Frontend Masters Live",
-      video_url: "https://youtube.com/watch?v=example2",
-      event_date: "2024-01-10",
-      excerpt: "Exploring upcoming trends in frontend development and tooling."
-    },
-    {
-      id: 3,
-      title: "Design Systems at Scale",
-      slug: "design-systems-at-scale",
-      event_name: "Design Systems Conference",
-      video_url: "https://youtube.com/watch?v=example3",
-      event_date: "2023-12-20",
-      excerpt: "How to build and maintain design systems for large organizations."
-    },
-    {
-      id: 4,
-      title: "TypeScript Best Practices",
-      slug: "typescript-best-practices",
-      event_name: "TypeScript Summit",
-      video_url: "https://youtube.com/watch?v=example4",
-      event_date: "2023-12-15",
-      excerpt: "Advanced TypeScript patterns for better code quality and developer experience."
+  const data = useStaticQuery(graphql`
+    query SpeakingPageQuery {
+      directus {
+        post(filter: { 
+          status: { _eq: "published" }
+          type: { _eq: "speaking" }
+        }, sort: ["-date_created"]) {
+          id
+          title
+          event_name
+          video_url
+          date_created
+          excerpt
+          type
+          status
+        }
+        podcastPosts: post(filter: { 
+          status: { _eq: "published" }
+          type: { _eq: "podcast" }
+        }, sort: ["-date_created"]) {
+          id
+          title
+          excerpt
+          date_created
+          type
+          status
+        }
+      }
     }
-  ]
+  `)
 
-  const podcastEpisodes = [
-    {
-      id: 1,
-      title: "The Developer's Journey",
-      slug: "developers-journey",
-      podcast_name: "Code & Coffee",
-      audio_url: "https://example.com/podcast1.mp3",
-      date_created: "2024-01-20",
-      excerpt: "Discussing career growth and learning paths in software development."
-    },
-    {
-      id: 2,
-      title: "Web Performance Optimization",
-      slug: "web-performance-optimization",
-      podcast_name: "Frontend Focus",
-      audio_url: "https://example.com/podcast2.mp3",
-      date_created: "2024-01-12",
-      excerpt: "Techniques and tools for optimizing web application performance."
-    },
-    {
-      id: 3,
-      title: "Building Accessible Interfaces",
-      slug: "building-accessible-interfaces",
-      podcast_name: "A11y Talks",
-      audio_url: "https://example.com/podcast3.mp3",
-      date_created: "2024-01-05",
-      excerpt: "Best practices for creating inclusive and accessible web experiences."
-    },
-    {
-      id: 4,
-      title: "The State of React in 2024",
-      slug: "state-of-react-2024",
-      podcast_name: "React Roundup",
-      audio_url: "https://example.com/podcast4.mp3",
-      date_created: "2023-12-28",
-      excerpt: "Exploring React's evolution and what's coming next in the ecosystem."
-    },
-    {
-      id: 5,
-      title: "CSS Grid and Flexbox Mastery",
-      slug: "css-grid-flexbox-mastery",
-      podcast_name: "CSS Podcast",
-      audio_url: "https://example.com/podcast5.mp3",
-      date_created: "2023-12-20",
-      excerpt: "Advanced layout techniques using modern CSS Grid and Flexbox."
-    },
-    {
-      id: 6,
-      title: "JavaScript Frameworks Comparison",
-      slug: "javascript-frameworks-comparison",
-      podcast_name: "JS Party",
-      audio_url: "https://example.com/podcast6.mp3",
-      date_created: "2023-12-15",
-      excerpt: "Comparing popular JavaScript frameworks and their use cases."
-    }
-  ]
+  const speakingEngagements = data?.directus?.post || []
+  const podcastEpisodes = data?.directus?.podcastPosts || []
 
   // Helper function to extract video ID from YouTube URL
   const getYouTubeVideoId = (url) => {
@@ -250,13 +187,13 @@ const SpeakingPage = () => {
             <div className="grid grid-cols-3 gap-8">
               {speakingEngagements.map((engagement) => (
                 <div key={engagement.id} className="flex flex-col gap-2 my-0 py-0">
-                  <Link to={`/speaking/${engagement.slug}/`}>
+                  <Link to={`/speaking/${engagement.id}/`}>
                     <div className="w-[280px] h-[440px] bg-[#c4c4c4] rounded hover:shadow-[0_0_20px_4px_rgba(255,255,255,0.3)] transition-all duration-[250ms] cursor-pointer my-1"></div>
                   </Link>
                   <div className="max-w-[680px]">
                     <h3 className="text-[#ffffff] my-0 mx-0 font-normal mb-2 text-xl leading-tight">{engagement.title}</h3>
                     <p className="text-[#c4c4c4] h-4 font-normal text-sm">
-                      {new Date(engagement.event_date).toLocaleDateString('en-US', {
+                      {new Date(engagement.date_created).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long'
                       })}
@@ -278,12 +215,12 @@ const SpeakingPage = () => {
             <div className="grid grid-cols-3 gap-6 py-0 h-auto">
               {podcastEpisodes.map((episode) => (
                 <div key={episode.id} className="space-y-3">
-                  <Link to={`/podcast/${episode.slug}/`}>
+                  <Link to={`/podcast/${episode.id}/`}>
                     <div className="aspect-square bg-[#c4c4c4] rounded hover:shadow-[0_0_20px_4px_rgba(255,255,255,0.3)] transition-all duration-[250ms] cursor-pointer py-0 h-auto my-1 mb-3"></div>
                   </Link>
                   <h3 className="text-[#ffffff] font-medium text-xl mb-2 mr-0 leading-tight">{episode.title}</h3>
                   <p className="text-[#c4c4c4] text-sm h-4">
-                    {new Date(episode.date).toLocaleDateString('en-US', {
+                    {new Date(episode.date_created).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long'
                     })}

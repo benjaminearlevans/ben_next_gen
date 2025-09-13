@@ -11,10 +11,10 @@ const Hero = () => {
     <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             {heroTitle}
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground leading-7 mb-8 max-w-3xl mx-auto">
             {heroSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

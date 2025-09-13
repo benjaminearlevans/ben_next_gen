@@ -195,13 +195,13 @@ export default function ArticleTemplate({ data, pageContext }) {
 For each file you refactor, ensure:
 
 - [x] **Remove all custom CSS files** - migrate to Tailwind utilities
-- [ ] **Replace styled-components** with className and Tailwind
+- [x] **Replace styled-components** with className and Tailwind
 - [ ] **Convert pixel values** to Tailwind spacing scale (8px = 2, 16px = 4, etc.)
-- [ ] **Use design tokens** from tailwind.config.js (max-w-article not max-w-[680px])
+- [x] **Use design tokens** from tailwind.config.js (max-w-article not max-w-[680px])
 - [ ] **Import shadcn/ui components** instead of creating custom ones
 - [ ] **Use cn() utility** for all conditional classes
 - [ ] **Apply prose classes** for markdown content
-- [ ] **Implement responsive patterns** with Tailwind breakpoints (sm:, md:, lg:)
+- [x] **Implement responsive patterns** with Tailwind breakpoints (sm:, md:, lg:)
 - [ ] **Remove CSS modules** and migrate to Tailwind
 
 ### Common Anti-Patterns to Fix

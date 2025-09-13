@@ -1,6 +1,8 @@
 import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layout"
+import EditorialLayout from "../components/layouts/editorial-layout"
+import { Badge } from "../components/ui/badge"
 
 const ArticlePost = ({ data }) => {
   const post = data.directus.post[0]
@@ -8,9 +10,9 @@ const ArticlePost = ({ data }) => {
   if (!post) {
     return (
       <Layout>
-        <div className="container">
-          <h1>Post not found</h1>
-        </div>
+        <EditorialLayout>
+          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">Post not found</h1>
+        </EditorialLayout>
       </Layout>
     )
   }
@@ -27,41 +29,46 @@ const ArticlePost = ({ data }) => {
 
   return (
     <Layout>
-      <article className="blog-post">
-        <div className="container">
-          <header className="blog-post-header">
-            <h1 className="blog-post-title">{post.title}</h1>
-            <div className="blog-post-meta">
-              <time className="blog-post-date">
+      <EditorialLayout>
+        <article className="py-8">
+          <header className="mb-8">
+            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mb-4">
+              {post.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+              <time dateTime={post.date_created}>
                 {formatDate(post.date_created)}
               </time>
               {post.author && (
-                <span className="blog-post-author">
+                <span>
                   by {post.author.first_name} {post.author.last_name}
                 </span>
               )}
-              <span className="post-type-badge article">Article</span>
+              <Badge variant="secondary">Article</Badge>
             </div>
             {post.excerpt && (
-              <p className="blog-post-excerpt">{post.excerpt}</p>
+              <p className="text-xl text-muted-foreground leading-7 [&:not(:first-child)]:mt-6">
+                {post.excerpt}
+              </p>
             )}
           </header>
 
           {post.featured_image && (
-            <div className="blog-post-image">
+            <figure className="breakout-medium my-8">
               <img 
                 src={`${process.env.GATSBY_DIRECTUS_URL}/assets/${post.featured_image.id}`}
                 alt={post.featured_image.title || post.title}
+                className="w-full rounded-lg"
               />
-            </div>
+            </figure>
           )}
 
-          <div className="blog-post-content">
+          <div className="prose prose-lg max-w-none">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
 
-        </div>
-      </article>
+        </article>
+      </EditorialLayout>
     </Layout>
   )
 }

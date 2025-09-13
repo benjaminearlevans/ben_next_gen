@@ -194,7 +194,7 @@ export default function ArticleTemplate({ data, pageContext }) {
 
 For each file you refactor, ensure:
 
-- [ ] **Remove all custom CSS files** - migrate to Tailwind utilities
+- [x] **Remove all custom CSS files** - migrate to Tailwind utilities
 - [ ] **Replace styled-components** with className and Tailwind
 - [ ] **Convert pixel values** to Tailwind spacing scale (8px = 2, 16px = 4, etc.)
 - [ ] **Use design tokens** from tailwind.config.js (max-w-article not max-w-[680px])

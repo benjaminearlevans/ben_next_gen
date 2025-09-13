@@ -57,3 +57,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
 }
+
+@layer utilities {
+  .breakout-medium {
+    @apply relative left-[50%] right-[50%] mx-[-50vw] w-screen max-w-breakout-md;
+  }
+  
+  .breakout-large {
+    @apply relative left-[50%] right-[50%] mx-[-50vw] w-screen max-w-breakout-lg;
+  }
+}

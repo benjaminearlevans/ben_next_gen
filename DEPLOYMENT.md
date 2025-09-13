@@ -1,4 +1,4 @@
-# Deployment Guide
+# Vercel Deployment Guide
 
 ## GitHub Repository Setup
 
@@ -19,6 +19,36 @@ git remote add origin https://github.com/yourusername/gatsby-directus-frontend.g
 git push -u origin main
 ```
 
+## Vercel Project Setup
+
+### 1. Connect GitHub Repository to Vercel
+
+1. Go to [Vercel](https://vercel.com) and sign in with GitHub
+2. Click "New Project" and import your GitHub repository
+3. Vercel will automatically detect it's a Gatsby project
+4. Configure the following settings:
+   - **Framework Preset**: Gatsby
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `public`
+   - **Install Command**: `npm install`
+
+### 2. Get Vercel Project Information
+
+After creating the project, get these values from Vercel dashboard:
+
+1. **Team/Organization ID**:
+   - Go to Settings → General
+   - Copy the Team ID (or Personal Account ID)
+
+2. **Project ID**:
+   - Go to your project → Settings → General
+   - Copy the Project ID
+
+3. **Access Token**:
+   - Go to Account Settings → Tokens
+   - Create a new token with appropriate scope
+   - Copy the token
+
 ## Environment Variables Setup
 
 ### Required Secrets in GitHub Repository
@@ -28,24 +58,20 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions,
 #### Directus Configuration
 - `DIRECTUS_URL`: Your Directus instance URL (e.g., `https://your-directus.com`)
 - `DIRECTUS_TOKEN`: Your Directus API token
-- `GATSBY_SITE_ID`: Site identifier for multi-site setup
+- `GATSBY_SITE_ID`: Site identifier for multi-site setup (e.g., `main`)
 
-#### Netlify Configuration (for deployment)
-- `NETLIFY_AUTH_TOKEN`: Your Netlify personal access token
-- `NETLIFY_PRODUCTION_SITE_ID`: Production site ID from Netlify
-- `NETLIFY_STAGING_SITE_ID`: Staging site ID from Netlify (optional)
+#### Vercel Configuration (for deployment)
+- `VERCEL_TOKEN`: Your Vercel access token
+- `VERCEL_ORG_ID`: Your Vercel team/organization ID
+- `VERCEL_PROJECT_ID`: Your Vercel project ID
 
-### Getting Netlify Tokens
+### Environment Variables in Vercel Dashboard
 
-1. **Personal Access Token**:
-   - Go to Netlify → User Settings → Applications
-   - Generate new access token
-   - Add as `NETLIFY_AUTH_TOKEN` secret
+Also add these in your Vercel project dashboard (Settings → Environment Variables):
 
-2. **Site IDs**:
-   - Go to your Netlify site → Site Settings → General
-   - Copy the Site ID
-   - Add as `NETLIFY_PRODUCTION_SITE_ID` secret
+- `DIRECTUS_URL`: Your Directus instance URL
+- `DIRECTUS_TOKEN`: Your Directus API token
+- `GATSBY_SITE_ID`: Site identifier (e.g., `main`)
 
 ## CI/CD Pipeline Features
 

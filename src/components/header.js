@@ -93,22 +93,91 @@ const Header = ({ siteTitle }) => {
   }
 
   return (
-    <header className="bg-background border-b sticky top-0 z-50">
+    <header className="bg-[#000000] text-[#ffffff] sticky top-0 z-50">
       {/* Navigation */}
       <nav className="flex justify-between items-center px-8 py-6">
-        <div className="flex space-x-8">
-          {leftNavItems.map(item => renderNavigationLink(item, false))}
+        <div className="flex space-x-8 items-center">
+          {leftNavItems.map(item => (
+            item.is_external ? (
+              <a
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.id}
+                to={item.url}
+                className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+                activeClassName="text-[#c4c4c4]"
+              >
+                {item.label}
+              </Link>
+            )
+          ))}
+          <a href="#" className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors flex items-center gap-1">
+            More
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </a>
         </div>
         <div className="flex space-x-8">
-          {rightNavItems.map(item => renderNavigationLink(item, false))}
+          {rightNavItems.map(item => (
+            item.is_external ? (
+              <a
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.id}
+                to={item.url}
+                className="text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+                activeClassName="text-[#c4c4c4]"
+              >
+                {item.label}
+              </Link>
+            )
+          ))}
         </div>
       </nav>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background">
-          <div className="px-8 py-4 space-y-2 border-t">
-            {navigationItems.map(item => renderNavigationLink(item, true))}
+        <div className="md:hidden bg-[#000000]">
+          <div className="px-8 py-4 space-y-2 border-t border-[#333333]">
+            {navigationItems.map(item => (
+              item.is_external ? (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-3 py-2 text-base font-medium text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.id}
+                  to={item.url}
+                  className="block px-3 py-2 text-base font-medium text-[#ffffff] hover:text-[#c4c4c4] transition-colors"
+                  activeClassName="text-[#c4c4c4]"
+                >
+                  {item.label}
+                </Link>
+              )
+            ))}
           </div>
         </div>
       )}
@@ -120,6 +189,7 @@ const Header = ({ siteTitle }) => {
           size="sm"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
+          className="text-[#ffffff] hover:text-[#c4c4c4] hover:bg-transparent"
         >
           <svg
             className="h-6 w-6"

@@ -9,7 +9,7 @@ const BlogPage = () => {
   const data = useStaticQuery(graphql`
     query BlogPostsQuery {
       directus {
-        posts(
+        post(
           filter: { 
             status: { _eq: "published" }
             type: { _eq: "article" }
@@ -23,21 +23,13 @@ const BlogPage = () => {
           date_created
           type
           status
-          featured_image {
-            id
-            title
-          }
-          author {
-            first_name
-            last_name
-          }
         }
       }
     }
   `)
 
   // Use dynamic posts from Directus, fallback to empty array if none found
-  const posts = data?.directus?.posts || []
+  const posts = data?.directus?.post || []
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {

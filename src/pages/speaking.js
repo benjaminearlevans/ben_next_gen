@@ -281,7 +281,7 @@ const SpeakingPage = () => {
                   <Link to={`/podcast/${episode.slug}/`}>
                     <div className="aspect-square bg-[#c4c4c4] rounded hover:shadow-[0_0_20px_4px_rgba(255,255,255,0.3)] transition-all duration-[250ms] cursor-pointer py-0 h-auto my-1 mb-3"></div>
                   </Link>
-                  <h3 className="text-[#ffffff] font-medium h-6 text-xl mb-2 mr-0">{episode.title}</h3>
+                  <h3 className="text-[#ffffff] font-medium text-xl mb-2 mr-0 leading-tight">{episode.title}</h3>
                   <p className="text-[#c4c4c4] text-sm h-4">
                     {new Date(episode.date).toLocaleDateString('en-US', {
                       year: 'numeric',

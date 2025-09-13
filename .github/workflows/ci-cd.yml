@@ -58,9 +58,9 @@ jobs:
       - name: Build Gatsby site
         run: npm run build
         env:
-          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL }}
-          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN }}
-          GATSBY_SITE_ID: ${{ secrets.GATSBY_SITE_ID }}
+          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL || '' }}
+          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN || '' }}
+          GATSBY_SITE_ID: ${{ secrets.GATSBY_SITE_ID || 'main' }}
           
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -86,14 +86,14 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || '' }}
+          VERCEL_PROJECT_ID: prj_CcTaaz0ak82sLnjGif35dl28LMnT
         
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL }}
-          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN }}
+          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL || '' }}
+          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN || '' }}
           GATSBY_SITE_ID: staging
         
       - name: Deploy Project Artifacts to Vercel
@@ -116,15 +116,15 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || '' }}
+          VERCEL_PROJECT_ID: prj_CcTaaz0ak82sLnjGif35dl28LMnT
         
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL }}
-          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN }}
-          GATSBY_SITE_ID: ${{ secrets.GATSBY_SITE_ID }}
+          DIRECTUS_URL: ${{ secrets.DIRECTUS_URL || '' }}
+          DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN || '' }}
+          GATSBY_SITE_ID: ${{ secrets.GATSBY_SITE_ID || 'main' }}
         
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

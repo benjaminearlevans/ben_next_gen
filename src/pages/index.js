@@ -1,5 +1,5 @@
 import React from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import Layout from "../components/layout"
 import Hero from "../components/hero"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
@@ -49,7 +49,24 @@ const IndexPage = () => {
 
   // Use featured posts if available, otherwise fall back to latest articles
   const featuredPosts = data?.directus?.featured_posts?.map(fp => fp.post) || []
-  const latestPosts = data?.directus?.post || []
+  const latestPosts = data?.directus?.post || [
+    {
+      id: "1",
+      title: "Getting Started with Gatsby and Directus",
+      slug: "gatsby-directus-guide",
+      excerpt: "Learn how to build a modern website with Gatsby and Directus CMS.",
+      type: "article",
+      date_created: "2024-01-15"
+    },
+    {
+      id: "2",
+      title: "Building Dynamic Search with Algolia",
+      slug: "algolia-search-integration",
+      excerpt: "Implement powerful search functionality in your Gatsby site.",
+      type: "tutorial",
+      date_created: "2024-01-10"
+    }
+  ]
   const posts = featuredPosts.length > 0 ? featuredPosts : latestPosts
 
   const formatDate = (dateString) => {

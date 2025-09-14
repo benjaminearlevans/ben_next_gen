@@ -11,6 +11,7 @@ trigger: always_on
 - **NEVER** deviate from the established patterns and conventions outlined below
 - **REFERENCE** these rules before making any code changes or architectural decisions
 - **VALIDATE** all code against these guidelines before implementation
+- - **NEVER** implement static content - all content must be dynamically served from my directus instance
 
 ### Rule Maintenance Protocol
 - **UPDATE** these rules when new patterns emerge or issues are resolved
@@ -399,4 +400,3 @@ const SEO: React.FC<SEOProps> = ({
 - Validate and sanitize user inputs
 - Use HTTPS for all external API calls
 - Implement rate limiting for form submissions
-

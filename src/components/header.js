@@ -1,15 +1,15 @@
-import React, { useState } from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import React from 'react'
+import { Link, useStaticQuery, graphql } from 'gatsby'
 import { Button } from "./ui/button"
 import { cn } from "../lib/utils"
 import SearchButton from "./search/SearchButton"
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
-  // Fetch navigation items from Directus
+  // Fetch navigation and site settings from Directus
   const data = useStaticQuery(graphql`
-    query NavigationQuery {
+    query HeaderQuery {
       directus {
         navigation(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
           id
@@ -19,14 +19,6 @@ const Header = () => {
           is_cta
           sort_order
         }
-      }
-    }
-  `)
-
-  // Fetch site settings for dynamic site title
-  const settingsData = useStaticQuery(graphql`
-    query SiteSettingsQuery {
-      directus {
         site_settings {
           site_title
         }
@@ -34,21 +26,19 @@ const Header = () => {
     }
   `)
 
-  // Static fallback navigation items
-  const staticNavItems = [
-    { id: "1", label: "Home", url: "/", is_external: false, is_cta: false },
-    { id: "2", label: "Blog", url: "/blog", is_external: false, is_cta: false },
-    { id: "3", label: "Speaking", url: "/speaking", is_external: false, is_cta: false },
-    { id: "4", label: "Podcast", url: "/podcast", is_external: false, is_cta: false },
-    { id: "5", label: "Contact", url: "mailto:hello@benjamincarlson.io", is_external: true, is_cta: true }
+  // Fallback navigation if Directus collection doesn't exist yet
+  const navigation = data?.directus?.navigation || [
+    { id: '1', label: 'Blog', url: '/blog/', is_external: false, is_cta: false },
+    { id: '2', label: 'Speaking', url: '/speaking/', is_external: false, is_cta: false },
+    { id: '3', label: 'Podcast', url: '/podcast/', is_external: false, is_cta: false },
+    { id: '4', label: 'Contact', url: '/contact/', is_external: false, is_cta: true }
   ]
 
-  const dynamicSiteTitle = settingsData?.directus?.site_settings?.site_title || 'Benjamin Carlson'
-  const navigationItems = data?.directus?.navigation || staticNavItems
+  const siteTitle = data?.directus?.site_settings?.site_title || "Benjamin Carlson"
 
   // Split navigation items into left and right groups
-  const leftNavItems = navigationItems.filter(item => !item.is_cta)
-  const rightNavItems = navigationItems.filter(item => item.is_cta)
+  const leftNavItems = navigation.filter(item => !item.is_cta)
+  const rightNavItems = navigation.filter(item => item.is_cta)
 
   const renderNavigationLink = (item, isMobile = false) => {
     const baseClasses = cn(
@@ -164,7 +154,7 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-[#000000]">
           <div className="px-8 py-4 space-y-2 border-t border-[#333333]">
-            {navigationItems.map(item => (
+            {navigation.map(item => (
               item.is_external ? (
                 <a
                   key={item.id}

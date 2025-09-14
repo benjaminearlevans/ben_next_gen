@@ -30,7 +30,15 @@ const SpeakingPage = () => {
     }
   `)
 
-  const speakingPosts = data?.directus?.speaking || []
+  const speakingPosts = data?.directus?.speaking || [
+    {
+      id: "1",
+      title: "Building Modern Web Applications",
+      event_name: "Tech Conference 2024",
+      date: "2024-01-20",
+      description: "A deep dive into modern web development practices."
+    }
+  ]
   const podcastEpisodes = data?.directus?.post || []
 
   // Helper function to extract video ID from YouTube URL

@@ -13,6 +13,26 @@ const IndexPage = () => {
         featured_posts(filter: { status: { _eq: "published" } }) {
           id
           sort_order
+          post {
+            post_id {
+              id
+              title
+              slug
+              excerpt
+              date_created
+              type
+              featured_image {
+                id
+                filename_download
+                width
+                height
+              }
+              author {
+                first_name
+                last_name
+              }
+            }
+          }
         }
         post(filter: { 
           status: { _eq: "published" }
@@ -40,7 +60,7 @@ const IndexPage = () => {
   `)
 
   // Use featured posts if available, otherwise fall back to latest articles
-  const featuredPosts = data?.directus?.featured_posts?.map(fp => fp.post) || []
+  const featuredPosts = data?.directus?.featured_posts?.map(fp => fp.post?.post_id).filter(Boolean) || []
   const latestPosts = data?.directus?.post || []
   const posts = featuredPosts.length > 0 ? featuredPosts : latestPosts
 

@@ -67,41 +67,13 @@ const PageTemplate = ({ data, pageContext }) => {
 export default PageTemplate
 
 export const query = graphql`
-  query PageQuery($id: String!) {
+  query PageQuery($id: ID!) {
     directus {
       pages_by_id(id: $id) {
         id
         title
         slug
         meta_description
-        blocks {
-          collection
-          item {
-            ... on Directus_block_hero {
-              id
-              headline
-              content
-              buttons
-              image {
-                id
-                filename_download
-                width
-                height
-              }
-            }
-            ... on Directus_block_richtext {
-              id
-              headline
-              content
-            }
-            ... on Directus_block_cardgroup {
-              id
-              headline
-              content
-              group_type
-            }
-          }
-        }
       }
     }
   }

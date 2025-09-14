@@ -12,6 +12,7 @@ trigger: always_on
 - **REFERENCE** these rules before making any code changes or architectural decisions
 - **VALIDATE** all code against these guidelines before implementation
 - - **NEVER** implement static content - all content must be dynamically served from my directus instance
+- **NEVER**  temporarily disable problematic queries when faced with a graphql error - you must fix the error and keep the site dynamic
 
 ### Rule Maintenance Protocol
 - **UPDATE** these rules when new patterns emerge or issues are resolved
@@ -87,61 +88,7 @@ Structure files in this order:
 - Look for existing type definitions in the codebase first
 - Avoid type assertions with `as` or `!`
 
-### Directus Integration Types
-```typescript
-// Core Directus interfaces based on your collections
-interface DirectusPost {
-  id: string
-  title: string
-  slug: string
-  content: string
-  excerpt?: string
-  status: 'draft' | 'published'
-  type: 'article' | 'tutorial' | 'news'
-  date_created: string
-  date_updated?: string
-  featured_image?: DirectusFile
-  author: DirectusUser
-  tags?: DirectusTag[]
-}
 
-interface DirectusSpeaking {
-  id: string
-  title: string
-  event_name: string
-  video_url?: string
-  date: string
-  description?: string
-  type: 'speaking' | 'podcast'
-  status: 'draft' | 'published'
-}
-
-interface DirectusNavigation {
-  id: string
-  label: string
-  url: string
-  sort_order: number
-  is_external: boolean
-  is_cta: boolean
-  status: 'draft' | 'published'
-}
-
-interface DirectusFile {
-  id: string
-  title?: string
-  filename_download: string
-  type: string
-  width?: number
-  height?: number
-}
-
-interface DirectusUser {
-  id: string
-  first_name: string
-  last_name: string
-  email?: string
-}
-```
 
 ## Syntax and Formatting
 
@@ -198,70 +145,7 @@ interface DirectusUser {
 - Implement code splitting and lazy loading
 - Optimize bundle size and eliminate unused code
 
-## Directus Integration Guidelines
 
-### GraphQL Queries
-```typescript
-// Directus GraphQL query patterns for your site
-const BLOG_POSTS_QUERY = graphql`
-  query BlogPosts {
-    directus {
-      posts(filter: { 
-        status: { _eq: "published" }
-        type: { _eq: "article" }
-      }, sort: ["-date_created"]) {
-        id
-        title
-        slug
-        excerpt
-        date_created
-        type
-        featured_image {
-          id
-          filename_download
-          width
-          height
-        }
-        author {
-          first_name
-          last_name
-        }
-      }
-    }
-  }
-`
-
-const NAVIGATION_QUERY = graphql`
-  query NavigationQuery {
-    directus {
-      navigation(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
-        id
-        label
-        url
-        is_external
-        is_cta
-        sort_order
-      }
-    }
-  }
-`
-
-const SPEAKING_QUERY = graphql`
-  query SpeakingQuery {
-    directus {
-      speaking(filter: { status: { _eq: "published" } }, sort: ["-date"]) {
-        id
-        title
-        event_name
-        video_url
-        date
-        description
-        type
-      }
-    }
-  }
-`
-```
 
 ### Error Handling
 - Always provide fallback content for Directus API failures

@@ -26,6 +26,10 @@ const SpeakingPage = () => {
           date_created
           type
         }
+        companies(filter: { status: { _eq: "published" } }) {
+          id
+          name
+        }
       }
     }
   `)
@@ -40,6 +44,39 @@ const SpeakingPage = () => {
     }
   ]
   const podcastEpisodes = data?.directus?.post || []
+  const companies = data?.directus?.companies || [
+    {
+      id: "1",
+      name: "Tech Conference 2024",
+      website_url: "https://techconf.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    },
+    {
+      name: "Adobe",
+      website_url: "https://adobe.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    },
+    {
+      name: "Microsoft",
+      website_url: "https://microsoft.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    },
+    {
+      name: "Google",
+      website_url: "https://google.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    },
+    {
+      name: "Shopify",
+      website_url: "https://shopify.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    },
+    {
+      name: "Stripe",
+      website_url: "https://stripe.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
+    }
+  ]
 
   // Helper function to extract video ID from YouTube URL
   const getYouTubeVideoId = (url) => {
@@ -52,21 +89,17 @@ const SpeakingPage = () => {
   // Helper function to get YouTube thumbnail
   const getYouTubeThumbnail = (url) => {
     const videoId = getYouTubeVideoId(url)
-    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null
-  }
-
-  // Helper function to extract Wistia video ID
-  const getWistiaVideoId = (url) => {
-    if (!url) return null
-    const regExp = /wistia\.com\/medias\/([a-zA-Z0-9]+)/
-    const match = url.match(regExp)
-    return match ? match[1] : null
+    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/images/default-video-thumb.jpg'
   }
 
   // Helper function to get Wistia thumbnail
   const getWistiaThumbnail = (url) => {
-    const videoId = getWistiaVideoId(url)
-    return videoId ? `https://embed-fastly.wistia.com/deliveries/${videoId}.jpg` : null
+    // Extract Wistia video ID from URL
+    const match = url.match(/wistia\.com\/medias\/([a-zA-Z0-9]+)/)
+    if (match && match[1]) {
+      return `https://embed-fastly.wistia.com/deliveries/${match[1]}/thumbnail.jpg`
+    }
+    return '/images/default-video-thumb.jpg'
   }
 
   // Get thumbnail based on video URL
@@ -80,75 +113,6 @@ const SpeakingPage = () => {
     }
     return '/images/default-video-thumb.jpg'
   }
-
-  // Fetch companies/audiences from Directus
-  const companiesData = useStaticQuery(graphql`
-    query CompaniesQuery {
-      directus {
-        companies(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
-          id
-          name
-          logo {
-            id
-            filename_download
-            width
-            height
-          }
-          website_url
-          sort_order
-        }
-      }
-    }
-  `)
-
-  const companies = companiesData?.directus?.companies || [
-    {
-      id: "1",
-      name: "Tech Conference 2024",
-      website_url: "https://techconf.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Adobe",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor"><path d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624V1.376z" /></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "Salesforce",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><g transform="scale(0.3)"><path d="M163.6 69.2c-6.9-8.8-17.8-14.5-30.1-14.5-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3C-3.1 89.9-8 97.6-8 106.5c0 13.3 10.8 24.1 24.1 24.1h135.1c17.7 0 32-14.3 32-32 0-13.4-8.2-24.9-19.9-29.4z" /><path d="M133.5 54.7c-3.5 0-6.9.5-10.1 1.4-5.2-20.2-23.5-35.2-45.4-35.2-18.4 0-34.4 10.7-42.1 26.2-2.7-.6-5.5-.9-8.4-.9-20.1 0-36.4 16.3-36.4 36.4 0 1.1.1 2.2.2 3.3-4.4 4-7.2 9.7-7.2 16.1 0 12 9.7 21.7 21.7 21.7h127.7c16.6 0 30-13.4 30-30s-13.4-30-30-30z" /></g></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "Netflix",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">Netflix</text></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "Airbnb",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">Airbnb</text></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "Dropbox",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 2L0 6l6 4 6-4-6-4zM18 2l-6 4 6 4 6-4-6-4zM0 14l6-4 6 4-6 4-6-4zM18 10l6 4-6 4-6-4 6-4zM6 16l6 4 6-4-6-4-6 4z" />
-        </svg>
-      ),
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "SXSW",
-      logo: (
-        <svg className="h-8 w-auto" viewBox="0 0 120 60" fill="currentColor">
-          <text x="0" y="40" className="text-3xl font-bold">
-            SXSW
-          </text>
-        </svg>
-      ),
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    }
-  ]
 
   return (
     <Layout>

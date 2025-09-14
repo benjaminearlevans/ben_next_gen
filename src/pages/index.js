@@ -10,16 +10,8 @@ const IndexPage = () => {
   const data = useStaticQuery(graphql`
     query HomepageQuery {
       directus {
-        featured_posts(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
+        featured_posts(filter: { status: { _eq: "published" } }) {
           id
-          post {
-            id
-            title
-            slug
-            excerpt
-            type
-            date_created
-          }
           sort_order
         }
         post(filter: { 

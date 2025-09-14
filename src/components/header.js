@@ -2,8 +2,9 @@ import React, { useState } from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { Button } from "./ui/button"
 import { cn } from "../lib/utils"
+import SearchButton from "./search/SearchButton"
 
-const Header = ({ siteTitle }) => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Fetch navigation items from Directus
@@ -22,15 +23,6 @@ const Header = ({ siteTitle }) => {
     }
   `)
 
-  // Use dynamic navigation items from Directus, fallback to static if none found
-  const navigationItems = data?.directus?.navigation || [
-    { id: 1, label: 'Home', url: '/', is_external: false, is_cta: false },
-    { id: 2, label: 'Blog', url: '/blog/', is_external: false, is_cta: false },
-    { id: 3, label: 'Speaking', url: '/speaking/', is_external: false, is_cta: false },
-    { id: 4, label: 'Podcast', url: '/podcast/', is_external: false, is_cta: false },
-    { id: 5, label: 'Get in Touch', url: '/contact/', is_external: false, is_cta: true }
-  ]
-
   // Fetch site settings for dynamic site title
   const settingsData = useStaticQuery(graphql`
     query SiteSettingsQuery {
@@ -42,7 +34,17 @@ const Header = ({ siteTitle }) => {
     }
   `)
 
-  const dynamicSiteTitle = siteTitle || settingsData?.directus?.site_settings?.site_title || 'Benjamin Carlson'
+  // Static fallback navigation items
+  const staticNavItems = [
+    { id: "1", label: "Home", url: "/", is_external: false, is_cta: false },
+    { id: "2", label: "Blog", url: "/blog", is_external: false, is_cta: false },
+    { id: "3", label: "Speaking", url: "/speaking", is_external: false, is_cta: false },
+    { id: "4", label: "Podcast", url: "/podcast", is_external: false, is_cta: false },
+    { id: "5", label: "Contact", url: "mailto:hello@benjamincarlson.io", is_external: true, is_cta: true }
+  ]
+
+  const dynamicSiteTitle = settingsData?.directus?.site_settings?.site_title || 'Benjamin Carlson'
+  const navigationItems = data?.directus?.navigation || staticNavItems
 
   // Split navigation items into left and right groups
   const leftNavItems = navigationItems.filter(item => !item.is_cta)
@@ -131,7 +133,8 @@ const Header = ({ siteTitle }) => {
             )
           ))}
         </div>
-        <div className="flex space-x-8">
+        <div className="flex space-x-8 items-center">
+          <SearchButton className="text-[#ffffff] hover:text-[#c4c4c4]" />
           {rightNavItems.map(item => (
             item.is_external ? (
               <a

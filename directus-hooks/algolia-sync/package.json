@@ -1,0 +1,12 @@
+{
+  "name": "directus-algolia-sync-hook",
+  "version": "1.0.0",
+  "description": "Directus custom hook for syncing content to Algolia search",
+  "main": "index.js",
+  "dependencies": {
+    "algoliasearch": "^4.20.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

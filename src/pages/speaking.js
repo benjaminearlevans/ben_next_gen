@@ -6,36 +6,32 @@ const SpeakingPage = () => {
   const data = useStaticQuery(graphql`
     query SpeakingPageQuery {
       directus {
-        post(filter: { 
-          status: { _eq: "published" }
-          type: { _eq: "speaking" }
-        }, sort: ["-date_created"]) {
+        speaking(filter: { status: { _eq: "published" } }, sort: ["-date"]) {
           id
           title
           event_name
           video_url
-          date_created
-          excerpt
+          date
+          description
           type
-          status
         }
-        podcastPosts: post(filter: { 
+        post(filter: { 
           status: { _eq: "published" }
           type: { _eq: "podcast" }
         }, sort: ["-date_created"]) {
           id
           title
+          slug
           excerpt
           date_created
           type
-          status
         }
       }
     }
   `)
 
-  const speakingEngagements = data?.directus?.post || []
-  const podcastEpisodes = data?.directus?.podcastPosts || []
+  const speakingPosts = data?.directus?.speaking || []
+  const podcastEpisodes = data?.directus?.post || []
 
   // Helper function to extract video ID from YouTube URL
   const getYouTubeVideoId = (url) => {
@@ -84,23 +80,25 @@ const SpeakingPage = () => {
         companies(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
           id
           name
-          description
-          logo_svg
+          logo {
+            id
+            filename_download
+            width
+            height
+          }
+          website_url
+          sort_order
         }
       }
     }
   `)
 
-  const pastAudiences = companiesData?.directus?.companies || [
+  const companies = companiesData?.directus?.companies || [
     {
-      name: "Berkeley",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 200 60" fill="currentColor"><text x="0" y="40" className="text-2xl font-bold">UC Berkeley</text></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
-    },
-    {
-      name: "AIGA",
-      logo_svg: '<svg className="h-8 w-auto" viewBox="0 0 120 60" fill="currentColor"><text x="0" y="40" className="text-3xl font-bold">AIGA</text></svg>',
-      description: "Delivered a talk to help teams understand the benefits of inclusive design",
+      id: "1",
+      name: "Tech Conference 2024",
+      website_url: "https://techconf.com",
+      description: "Delivered a talk to help teams understand the benefits of inclusive design"
     },
     {
       name: "Adobe",

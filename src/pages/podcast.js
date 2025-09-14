@@ -16,23 +16,28 @@ const PodcastPage = () => {
         }, sort: ["-date_created"]) {
           id
           title
+          slug
           excerpt
-          date_created
+          content
           type
-          status
-          audio_url
-          podcast_name
-          duration
+          date_created
+          date_updated
           featured_image {
             id
-            title
+            filename_download
+            width
+            height
+          }
+          author {
+            first_name
+            last_name
           }
         }
       }
     }
   `)
 
-  const podcasts = data?.directus?.post || []
+  const podcastEpisodes = data?.directus?.post || []
 
   const formatDate = (dateString) => {
     if (!dateString) return ''

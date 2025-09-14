@@ -11,24 +11,16 @@ const IndexPage = () => {
     query HomepageQuery {
       directus {
         featured_posts(filter: { status: { _eq: "published" } }, sort: ["sort_order"]) {
+          id
           post {
             id
             title
             slug
             excerpt
-            date_created
             type
-            featured_image {
-              id
-              filename_download
-              width
-              height
-            }
-            author {
-              first_name
-              last_name
-            }
+            date_created
           }
+          sort_order
         }
         post(filter: { 
           status: { _eq: "published" }

@@ -37,17 +37,7 @@ const PodcastPage = () => {
     }
   `)
 
-  const podcastEpisodes = data?.directus?.post || [
-    {
-      id: "1",
-      title: "Building Modern Web Apps",
-      slug: "modern-web-apps-podcast",
-      excerpt: "Discussion about modern web development practices.",
-      type: "podcast",
-      date_created: "2024-01-15",
-      author: { first_name: "Benjamin", last_name: "Carlson" }
-    }
-  ]
+  const podcastEpisodes = data?.directus?.post || []
 
   const formatDate = (dateString) => {
     if (!dateString) return ''

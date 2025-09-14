@@ -35,26 +35,7 @@ const BlogPage = () => {
     }
   `)
 
-  const posts = data?.directus?.post || [
-    {
-      id: "1",
-      title: "Getting Started with Gatsby and Directus",
-      slug: "gatsby-directus-guide",
-      excerpt: "Learn how to build a modern website with Gatsby and Directus CMS.",
-      type: "article",
-      date_created: "2024-01-15",
-      author: { first_name: "Benjamin", last_name: "Carlson" }
-    },
-    {
-      id: "2",
-      title: "Building Dynamic Search with Algolia",
-      slug: "algolia-search-integration",
-      excerpt: "Implement powerful search functionality in your Gatsby site.",
-      type: "tutorial",
-      date_created: "2024-01-10",
-      author: { first_name: "Benjamin", last_name: "Carlson" }
-    }
-  ]
+  const posts = data?.directus?.post || []
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {

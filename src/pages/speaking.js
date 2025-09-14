@@ -34,49 +34,9 @@ const SpeakingPage = () => {
     }
   `)
 
-  const speakingPosts = data?.directus?.speaking || [
-    {
-      id: "1",
-      title: "Building Modern Web Applications",
-      event_name: "Tech Conference 2024",
-      date: "2024-01-20",
-      description: "A deep dive into modern web development practices."
-    }
-  ]
+  const speakingPosts = data?.directus?.speaking || []
   const podcastEpisodes = data?.directus?.post || []
-  const companies = data?.directus?.companies || [
-    {
-      id: "1",
-      name: "Tech Conference 2024",
-      website_url: "https://techconf.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Adobe",
-      website_url: "https://adobe.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Microsoft",
-      website_url: "https://microsoft.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Google",
-      website_url: "https://google.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Shopify",
-      website_url: "https://shopify.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    },
-    {
-      name: "Stripe",
-      website_url: "https://stripe.com",
-      description: "Delivered a talk to help teams understand the benefits of inclusive design"
-    }
-  ]
+  const companies = data?.directus?.companies || []
 
   // Helper function to extract video ID from YouTube URL
   const getYouTubeVideoId = (url) => {
